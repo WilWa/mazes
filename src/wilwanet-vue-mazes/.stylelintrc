@@ -1,0 +1,20 @@
+{
+  "extends": "stylelint-config-recommended-vue/scss",
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "annotation-no-unknown": true,
+    "declaration-block-no-redundant-longhand-properties": true,
+    "import-notation": "string",
+    "length-zero-no-unit": true,
+    "selector-pseudo-element-colon-notation": "double",
+    "shorthand-property-no-redundant-values": true,
+    "scss/at-each-key-value-single-line": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "scss/at-mixin-argumentless-call-parentheses": "always",
+    "scss/function-no-unknown": [true, { "ignoreFunctions": ["grid-units-px"] }],
+    "scss/map-keys-quotes": "always",
+    "scss/selector-no-redundant-nesting-selector": true,
+    "scss/no-duplicate-dollar-variables": true,
+    "scss/no-global-function-names": null
+  }
+}

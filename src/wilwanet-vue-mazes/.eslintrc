@@ -1,0 +1,176 @@
+{
+    "root": true, // Do not look for configuration in parent folders
+    "env": {
+        "browser": true, // Browser global variables
+        "es2021": true, // Adds all ECMAScript 2021 globals and automatically sets the ecmaVersion parser option to 12
+        "node": true // Node.js global variables and Node.js scoping
+    },
+    "globals": {
+        "defineProps": "readonly",
+        "defineEmits": "readonly",
+        "withDefaults": "readonly"
+    },
+    "extends": [
+        "eslint:recommended", // Recommended JS rules (provided by eslint) https://eslint.org/docs/latest/rules/
+        "plugin:vue/vue3-recommended", // Recommend Vue 3 rules (provided by eslint-plugin-vue) https://eslint.vuejs.org/
+        "@vue/eslint-config-typescript/recommended", // Recommended Vue 3 + TS rules (provided by @vue/eslint-config-typescript) https://www.npmjs.com/package/@vue/eslint-config-typescript
+        "prettier" // Turns off all rules that are unnecessary or might conflict with Prettier. (provide by eslint-config-prettier)
+    ],
+    "rules": {
+        /** Vue Rules */
+        "vue/html-self-closing": [
+            "error",
+            {
+                "html": {
+                    "component": "always"
+                }
+            }
+        ],
+        "vue/component-tags-order": [
+            "error",
+            {
+                "order": [
+                    "template",
+                    "script",
+                    "style"
+                ]
+            }
+        ],
+        "vue/attributes-order": [
+            "error",
+            {
+                "order": [
+                    "DEFINITION",
+                    "LIST_RENDERING",
+                    "CONDITIONALS",
+                    "RENDER_MODIFIERS",
+                    "GLOBAL",
+                    [
+                        "UNIQUE",
+                        "SLOT"
+                    ],
+                    "TWO_WAY_BINDING",
+                    "OTHER_DIRECTIVES",
+                    "OTHER_ATTR",
+                    "EVENTS",
+                    "CONTENT"
+                ],
+                "alphabetical": true
+            }
+        ],
+        "vue/define-macros-order": [
+            "error",
+            {
+                "order": [
+                    "defineProps",
+                    "defineEmits"
+                ]
+            }
+        ],
+        "vue/block-lang": [
+            "error",
+            {
+                "script": {
+                    "lang": "ts"
+                }
+            }
+        ],
+        "vue/component-api-style": [
+            "error",
+            [
+                "script-setup"
+            ]
+        ],
+        "vue/component-name-in-template-casing": [
+            "error",
+            "PascalCase",
+            {
+                "registeredComponentsOnly": false,
+                "ignores": []
+            }
+        ],
+        "vue/custom-event-name-casing": [
+            "error",
+            "camelCase",
+            {
+                "ignores": []
+            }
+        ],
+        "vue/no-static-inline-styles": [
+            "error",
+            {
+                "allowBinding": false
+            }
+        ],
+        "vue/no-undef-components": [
+            "error",
+            {
+                "ignorePatterns": []
+            }
+        ],
+        "vue/no-useless-mustaches": [
+            "error",
+            {
+                "ignoreIncludesComment": true,
+                "ignoreStringEscape": true
+            }
+        ],
+        "vue/no-useless-v-bind": [
+            "error",
+            {
+                "ignoreIncludesComment": true,
+                "ignoreStringEscape": true
+            }
+        ],
+        "vue/padding-line-between-blocks": [
+            "error",
+            "always"
+        ],
+        // always specify a type definition for events with defineEmits
+        "vue/require-emit-validator": "error", // todo: open an issue in eslint-plugin-vue to update this error message
+        "vue/v-for-delimiter-style": [
+            "error",
+            "of"
+        ],
+        "vue/v-on-function-call": [
+            "error",
+            "always",
+            {
+                "ignoreIncludesComment": false
+            }
+        ],
+        // follow https://github.com/vuejs/eslint-plugin-vue/issues/1728 for element attribute order support
+        /** ESLint Rules*/
+        "@typescript-eslint/no-unused-vars": "error",
+        "array-callback-return": "error",
+        "camelcase": "error",
+        "default-case-last": "error",
+        "default-param-last": "error",
+        "eqeqeq": "error",
+        "func-style": "error",
+        "max-classes-per-file": "error",
+        "no-await-in-loop": "error",
+        "no-console": "warn",
+        "no-constant-condition": [
+            "error",
+            {
+                "checkLoops": false
+            }
+        ],
+        "no-duplicate-imports": "error",
+        "no-floating-decimal": "error",
+        "no-labels": "error",
+        "no-lone-blocks": "error",
+        "no-lonely-if": "error",
+        "no-loop-func": "error",
+        "no-param-reassign": "error",
+        "no-promise-executor-return": "error",
+        "no-template-curly-in-string": "warn",
+        "no-unmodified-loop-condition": "warn",
+        "no-unreachable-loop": "warn",
+        "no-unused-expressions": "error",
+        "no-unused-vars": "off", // recommended no-unused-var rules for TS - source: https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-unused-vars.md
+        "require-atomic-updates": "error",
+        "sort-imports": "error"
+    }
+}
