@@ -1,5 +1,6 @@
-import Grid from '@/types/Grid'
+import type Grid from '@/types/Grid'
 
+// https://weblog.jamisbuck.org/2011/2/1/maze-generation-binary-tree-algorithm
 class BinaryTree {
   public static on(grid: Grid) {
     for (const cell of grid.getCells()) {

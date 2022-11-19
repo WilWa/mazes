@@ -1,7 +1,10 @@
+import Distances from './Distances'
+
 class Cell {
-  private column: number
   private linksMap: Map<Cell, boolean>
-  private row: number
+
+  public column: number
+  public row: number
 
   public north: Cell | undefined
   public south: Cell | undefined
@@ -12,6 +15,25 @@ class Cell {
     this.column = column
     this.linksMap = new Map<Cell, boolean>()
     this.row = row
+  }
+
+  public distances(): Distances {
+    const distances = new Distances(this)
+    let frontier: Cell[] = [this]
+    while (frontier.length > 0) {
+      const newFrontier: Cell[] = []
+      frontier.forEach((cell) => {
+        cell.links().forEach((link) => {
+          const cellDistance = distances.getDistance(cell)
+          if (cellDistance !== undefined && distances.getDistance(link) === undefined) {
+            distances.setDistance(link, cellDistance + 1)
+            newFrontier.push(link)
+          }
+        })
+      })
+      frontier = newFrontier
+    }
+    return distances
   }
 
   public isLinked(cell: Cell | undefined) {

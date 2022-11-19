@@ -1,46 +1,59 @@
 import Cell from '@/types/Cell'
 
 class Grid {
-  private columns: number
   private grid: Cell[][] = []
-  private rows: number
 
-  constructor(columns: number, rows: number) {
-    this.columns = columns
-    this.rows = rows
-    this.prepareGrid(columns, rows)
+  public columnCount: number
+  public rowCount: number
+
+  constructor(columnCount: number, rowCount: number) {
+    this.columnCount = columnCount
+    this.rowCount = rowCount
+    this.prepareGrid(columnCount, rowCount)
     this.configureCells()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public cellColor(cell: Cell): string {
+    return '#FFFFFFFF'
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public cellContents(cell: Cell): string {
+    return '  '
+  }
+
+  public getCell(column: number, row: number): Cell | undefined {
+    if (column >= 0 && column < this.columnCount && row >= 0 && row < this.rowCount) {
+      return this.grid[row][column]
+    }
+    return undefined
+  }
+
   public *getCells() {
-    let column = 0
-    let row = 0
-    while (column < this.columns) {
-      while (row < this.rows) {
-        yield this.grid[column][row]
-        row++
+    for (const row of this.grid) {
+      for (const cell of row) {
+        yield cell
       }
-      row = 0
-      column++
     }
   }
 
   public *getRows() {
-    let row = 0
-    while (row < this.rows) {
-      const rowCells: Cell[] = []
-      for (let column = 0; column < this.columns; column++) {
-        rowCells.push(this.grid[column][row])
-      }
-      yield rowCells
-      row++
+    for (const row of this.grid) {
+      yield row
     }
+  }
+
+  public randomCell() {
+    const randomColumn = Math.floor(Math.random() * this.columnCount)
+    const randomRow = Math.floor(Math.random() * this.rowCount)
+    return this.grid[randomRow][randomColumn]
   }
 
   public toString() {
     const output = []
     output.push('+')
-    for (let column = 0; column < this.grid.length; column++) {
+    for (let column = 0; column < this.columnCount; column++) {
       output.push('---+')
     }
     output.push('\n')
@@ -51,7 +64,7 @@ class Grid {
       bottom.push('+')
       for (let cell of row) {
         if (!cell) cell = new Cell(-1, -1)
-        const body = '   '
+        const body = this.cellContents(cell)
         const east = cell.isLinked(cell.east) ? ' ' : '|'
         top.push(body, east)
         const south = cell.isLinked(cell.south) ? '   ' : '---'
@@ -65,36 +78,23 @@ class Grid {
   }
 
   private configureCells() {
-    for (let column = 0; column < this.grid.length; column++) {
-      for (let row = 0; row < this.grid[column].length; row++) {
-        this.grid[column][row].east = this.getCell(column + 1, row)
-        this.grid[column][row].north = this.getCell(column, row - 1)
-        this.grid[column][row].south = this.getCell(column, row + 1)
-        this.grid[column][row].west = this.getCell(column - 1, row)
+    for (const row of this.grid) {
+      for (const cell of row) {
+        cell.east = this.getCell(cell.column + 1, cell.row)
+        cell.north = this.getCell(cell.column, cell.row - 1)
+        cell.south = this.getCell(cell.column, cell.row + 1)
+        cell.west = this.getCell(cell.column - 1, cell.row)
       }
     }
-  }
-
-  private getCell(column: number, row: number): Cell | undefined {
-    if (column >= 0 && column < this.columns && row >= 0 && row < this.rows) {
-      return this.grid[column][row]
-    }
-    return undefined
   }
 
   private prepareGrid(columns: number, rows: number) {
-    for (let column = 0; column < columns; column++) {
+    for (let row = 0; row < rows; row++) {
       this.grid.push([])
-      for (let row = 0; row < rows; row++) {
-        this.grid[column].push(new Cell(column, row))
+      for (let column = 0; column < columns; column++) {
+        this.grid[row].push(new Cell(column, row))
       }
     }
-  }
-
-  private randomCell() {
-    const randomColumn = Math.floor(Math.random() * this.columns)
-    const randomRow = Math.floor(Math.random() * this.rows)
-    return this.grid[randomColumn][randomRow]
   }
 }
 

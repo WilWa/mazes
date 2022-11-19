@@ -1,6 +1,7 @@
-import Grid from '@/types/Grid'
+import type Grid from '@/types/Grid'
 
-class SideWinder {
+// https://weblog.jamisbuck.org/2011/2/3/maze-generation-sidewinder-algorithm.html
+class Sidewinder {
   public static on(grid: Grid) {
     for (const row of grid.getRows()) {
       let run = []
@@ -24,4 +25,4 @@ class SideWinder {
   }
 }
 
-export default SideWinder
+export default Sidewinder
