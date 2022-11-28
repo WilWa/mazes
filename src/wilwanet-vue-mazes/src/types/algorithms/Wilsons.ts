@@ -1,10 +1,10 @@
-import type Cell from '../Cell'
+import BaseGridAlgorithm from './BaseGridAlgorithm'
 import type Grid from '@/types/Grid'
 
 // https://weblog.jamisbuck.org/2011/1/20/maze-generation-wilson-s-algorithm
-class Wilsons {
-  public static on(grid: Grid) {
-    const unvisited: Cell[] = [...grid.getCells()]
+class Wilsons extends BaseGridAlgorithm {
+  public on(grid: Grid) {
+    const unvisited = [...grid.getCells()]
     const firstIndex = Math.floor(Math.random() * unvisited.length)
     unvisited.splice(firstIndex, 1)
 

@@ -1,9 +1,10 @@
+import BaseGridAlgorithm from './BaseGridAlgorithm'
 import type Cell from '../Cell'
 import type Grid from '@/types/Grid'
 
 // https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
-class AldousBroder {
-  public static on(grid: Grid) {
+class AldousBroder extends BaseGridAlgorithm {
+  public on(grid: Grid) {
     let cell: Cell = grid.randomCell()
     let unvisited = grid.columnCount * grid.rowCount - 1
 

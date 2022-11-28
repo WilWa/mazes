@@ -1,80 +1,106 @@
+<!-- eslint-disable vue/html-self-closing -->
+<!-- Some kind of conflict on the above with the input tags ??? -->
 <template>
+  <div>
+    <div>
+      Columns
+      <button @click="columns--">Less</button>
+      <button @click="columns++">More</button>
+    </div>
+    <div>
+      Width
+      <button @click="cellWidth--">Less</button>
+      <button @click="cellWidth++">More</button>
+    </div>
+    <div>
+      Rows
+      <button @click="rows--">Less</button>
+      <button @click="rows++">More</button>
+    </div>
+    <div>
+      Height
+      <button @click="cellHeight--">Less</button>
+      <button @click="cellHeight++">More</button>
+    </div>
+    <div>
+      Algorithm
+      <select v-model="algorithmChoice">
+        <option>AldousBroder</option>
+        <option>BinaryTree</option>
+        <option>Sidewinder</option>
+        <option>Wilsons</option>
+      </select>
+    </div>
+    <div>
+      Options
+      <input
+        v-model="displayStart"
+        type="checkbox" />
+      Start
+      <input
+        v-model="displayGoal"
+        type="checkbox" />
+      Goal
+      <input
+        v-model="displayPath"
+        type="checkbox" />
+      Path
+      <input
+        v-model="displayColorMap"
+        type="checkbox" />
+      Color Map
+    </div>
+  </div>
+  <div>{{ algorithmChoice }}: {{ rows }} x {{ columns }}, cells {{ cellWidth }} x {{ cellHeight }}</div>
+  <button @click="mazeKey++">New Maze</button>
   <div class="mazeDisplay">
-    <div>
-      <h1>Binary Tree (Html)</h1>
-      <GridHtmlDisplay :grid="binaryTreeGrid" />
-    </div>
-    <div>
-      <h1>Sidewinder (Canvas)</h1>
-      <GridCanvasDisplay :grid="sidewinderGrid" />
-    </div>
-    <div>
-      <h1>AldousBroder (Html)</h1>
-      <GridHtmlDisplay :grid="aldousBroderGrid" />
-    </div>
-    <div>
-      <h1>Wilson's (Canvas)</h1>
-      <GridCanvasDisplay :grid="wilsonsGrid" />
-    </div>
+    <MazeGridCanvas
+      :key="mazeKey"
+      :algorithm="algorithm"
+      :cell-height="cellHeight"
+      :cell-width="cellWidth"
+      :columns="columns"
+      :display-color-map="displayColorMap"
+      :display-goal="displayGoal"
+      :display-path="displayPath"
+      :display-start="displayStart"
+      :rows="rows" />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { computed, ref } from 'vue'
   import AldousBroder from '@/types/algorithms/AldousBroder'
   import BinaryTree from '@/types/algorithms/BinaryTree'
-  import GridCanvasDisplay from './GridCanvasDisplay.vue'
-  import GridHtmlDisplay from './GridHtmlDisplay.vue'
+  import MazeGridCanvas from './MazeGridCanvas.vue'
   import Sidewinder from '@/types/algorithms/Sidewinder'
-  import SolvedColorGrid from '@/types/SolvedColorGrid'
   import Wilsons from '@/types/algorithms/Wilsons'
 
-  const binaryTreeGrid = new SolvedColorGrid(20, 20)
-  BinaryTree.on(binaryTreeGrid)
-  let startCell = binaryTreeGrid.getCell(0, 0)
-  if (startCell) {
-    const distances = startCell.distances()
-    const startMax = distances.max()
-    const backTrackDistances = startMax.distances()
-    const newStart = backTrackDistances.max()
-    binaryTreeGrid.breadcrumbs = backTrackDistances.pathTo(newStart)
-    binaryTreeGrid.distances = newStart.distances()
-  }
+  const algorithmChoice = ref('BinaryTree')
+  const cellHeight = ref(20)
+  const cellWidth = ref(20)
+  const columns = ref(20)
+  const displayColorMap = ref(true)
+  const displayGoal = ref(true)
+  const displayPath = ref(true)
+  const displayStart = ref(true)
+  const mazeKey = ref(0)
+  const rows = ref(20)
 
-  const sidewinderGrid = new SolvedColorGrid(20, 20)
-  Sidewinder.on(sidewinderGrid)
-  startCell = sidewinderGrid.getCell(0, 0)
-  if (startCell) {
-    const distances = startCell.distances()
-    const startMax = distances.max()
-    const backTrackDistances = startMax.distances()
-    const newStart = backTrackDistances.max()
-    sidewinderGrid.breadcrumbs = backTrackDistances.pathTo(newStart)
-    sidewinderGrid.distances = newStart.distances()
-  }
-
-  const aldousBroderGrid = new SolvedColorGrid(20, 20)
-  AldousBroder.on(aldousBroderGrid)
-  startCell = aldousBroderGrid.getCell(0, 0)
-  if (startCell) {
-    const distances = startCell.distances()
-    const startMax = distances.max()
-    const backTrackDistances = startMax.distances()
-    const newStart = backTrackDistances.max()
-    aldousBroderGrid.breadcrumbs = backTrackDistances.pathTo(newStart)
-    aldousBroderGrid.distances = newStart.distances()
-  }
-
-  const wilsonsGrid = new SolvedColorGrid(20, 20)
-  Wilsons.on(wilsonsGrid)
-  startCell = wilsonsGrid.getCell(0, 0)
-  if (startCell) {
-    const distances = startCell.distances()
-    const startMax = distances.max()
-    const backTrackDistances = startMax.distances()
-    const newStart = backTrackDistances.max()
-    wilsonsGrid.breadcrumbs = backTrackDistances.pathTo(newStart)
-    wilsonsGrid.distances = newStart.distances()
-  }
+  const algorithm = computed(() => {
+    switch (algorithmChoice.value) {
+      case 'AldousBroder':
+        return new AldousBroder()
+      case 'BinaryTree':
+        return new BinaryTree()
+      case 'Sidewinder':
+        return new Sidewinder()
+      case 'Wilsons':
+        return new Wilsons()
+      default:
+        return new BinaryTree()
+    }
+  })
 </script>
 
 <style scoped lang="scss">

@@ -1,9 +1,12 @@
 import Cell from '@/types/Cell'
+import Distances from './Distances'
 
 class Grid {
   private grid: Cell[][] = []
 
+  public breadcrumbs!: Distances
   public columnCount: number
+  public distances!: Distances
   public rowCount: number
 
   constructor(columnCount: number, rowCount: number) {
@@ -11,6 +14,11 @@ class Grid {
     this.rowCount = rowCount
     this.prepareGrid(columnCount, rowCount)
     this.configureCells()
+  }
+
+  public calculateDistances() {
+    this.distances = this.getMaximumDistances()
+    this.breadcrumbs = this.distances.pathTo(this.distances.max())
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,6 +44,18 @@ class Grid {
         yield cell
       }
     }
+  }
+
+  public getMaximumDistances(): Distances {
+    let maximumDistances = undefined
+    for (const cell of this.getCells()) {
+      const cellDistances = cell.distances()
+      const cellMaxPathLength = cellDistances.pathTo(cellDistances.max()).length()
+      if (maximumDistances === undefined || cellMaxPathLength > maximumDistances.length()) {
+        maximumDistances = cellDistances
+      }
+    }
+    return maximumDistances ?? new Distances(this.randomCell())
   }
 
   public *getRows() {

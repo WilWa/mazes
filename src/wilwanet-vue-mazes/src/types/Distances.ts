@@ -20,6 +20,10 @@ class Distances {
     return this.distanceMap.get(cell)
   }
 
+  public length() {
+    return this.distanceMap.size
+  }
+
   public pathTo(goal: Cell) {
     let currentCell: Cell = goal
     const breadCrumbs = new Distances(this.start)

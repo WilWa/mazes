@@ -1,8 +1,9 @@
+import BaseGridAlgorithm from './BaseGridAlgorithm'
 import type Grid from '@/types/Grid'
 
 // https://weblog.jamisbuck.org/2011/2/3/maze-generation-sidewinder-algorithm.html
-class Sidewinder {
-  public static on(grid: Grid) {
+class Sidewinder extends BaseGridAlgorithm {
+  public on(grid: Grid) {
     for (const row of grid.getRows()) {
       let run = []
       for (const cell of row) {
